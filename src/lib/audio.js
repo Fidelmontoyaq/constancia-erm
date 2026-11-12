@@ -1,0 +1,12 @@
+/* Sonidos generados con Web Audio (sin archivos externos). */
+const AC = window.AudioContext || window.webkitAudioContext; let ac = null, master = null, dest = null, muted = false;
+export function initAudio() { if (!AC) return; if (!ac) { ac = new AC(); master = ac.createGain(); master.gain.value = .8; master.connect(ac.destination); dest = ac.createMediaStreamDestination(); master.connect(dest); } if (ac.state === "suspended") ac.resume(); }
+function tono(f, t, g, d = 0, f2) { if (!ac || muted) return; const n = ac.currentTime + d, o = ac.createOscillator(), a = ac.createGain(); o.frequency.setValueAtTime(f, n); if (f2) o.frequency.exponentialRampToValueAtTime(f2, n + t); a.gain.setValueAtTime(.0001, n); a.gain.exponentialRampToValueAtTime(g, n + .004); a.gain.exponentialRampToValueAtTime(.0001, n + t); o.connect(a).connect(master); o.start(n); o.stop(n + t + .03); }
+export function tecla() { if (!ac || muted) return; const L = Math.floor(ac.sampleRate * .025), b = ac.createBuffer(1, L, ac.sampleRate), d = b.getChannelData(0); for (let i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3); const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = b; f.type = "bandpass"; f.frequency.value = 2000 + Math.random() * 1000; g.gain.value = .15; s.connect(f).connect(g).connect(master); s.start(); tono(210, .05, .03, 0, 90); }
+export function brillo() { [1318.5, 1568, 2093, 2637].forEach((f, i) => { tono(f, 1.6, .045, i * .09); tono(f * 2.76, .6, .012, i * .09); }); }
+function pop() { if (!ac || muted) return; const L = Math.floor(ac.sampleRate * .18), b = ac.createBuffer(1, L, ac.sampleRate), d = b.getChannelData(0); for (let i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 2.2); const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = b; f.type = "lowpass"; f.frequency.value = 2600; g.gain.value = .5; s.connect(f).connect(g).connect(master); s.start(); tono(260, .16, .12, 0, 70); }
+export function celebrar() { pop(); setTimeout(pop, 140); [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => { tono(f, .7, .05, .05 + i * .07); tono(f * 2, .5, .015, .05 + i * .07); }); [2093, 2637, 3136, 3520].forEach((f, i) => tono(f, 1.2, .02, .5 + i * .12)); }
+
+export const getDest = () => dest;
+export const setMuted = v => { muted = v; };
+export const isMuted = () => muted;
