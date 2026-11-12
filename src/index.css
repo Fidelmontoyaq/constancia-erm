@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-xl px-4 py-2.5 transition disabled:opacity-60 disabled:cursor-wait; }
+  .btn-rojo { @apply bg-[#b01c22] text-white hover:bg-[#8f151a]; }
+  .btn-gris { @apply bg-white text-slate-700 ring-1 ring-slate-300 hover:bg-slate-100; }
+}
