@@ -1,11 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
 
-@layer components {
-  .btn { @apply inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-xl px-4 py-2.5 transition disabled:opacity-60 disabled:cursor-wait; }
-  .btn-rojo { @apply bg-[#b01c22] text-white hover:bg-[#8f151a]; }
-  .btn-gris { @apply bg-white text-slate-700 ring-1 ring-slate-300 hover:bg-slate-100; }
-}
+/* Botones del certificado (CSS normal, sin @apply, para que funcione igual en Tailwind v3 y v4) */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-weight: 600; font-size: .875rem; border-radius: .75rem; padding: .625rem 1rem; transition: background-color .15s; cursor: pointer; }
+.btn:disabled { opacity: .6; cursor: wait; }
+.btn-rojo { background: #b01c22; color: #fff; }
+.btn-rojo:hover { background: #8f151a; }
+.btn-gris { background: #fff; color: #334155; box-shadow: inset 0 0 0 1px #cbd5e1; }
+.btn-gris:hover { background: #f1f5f9; }
