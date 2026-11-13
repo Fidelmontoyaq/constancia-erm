@@ -21,9 +21,7 @@ export const CONFIG = {
    • fecha    → "Lima, <mes en que termina el contrato> <año>", se arma sola con `fin`.
    ============================================================ */
 export const REGISTROS = [
-  { dni: '45821367', nombre: 'YOHANA ALCIRA CHUQUIHUACCHA QUIÑONES', funcion: 'FISCALIZADOR DE LOCAL DE VOTACIÓN', inicio: '2026-10-01', fin: '2026-10-05', codigo: 'LE2-ERM2026-0143' },
-  { dni: '70506809', nombre: 'CLAUDIO ALEXANDREE BEJAR LENZ', funcion: 'FISCALIZADOR DE LOCAL DE VOTACIÓN', inicio: '2026-10-01', fin: '2026-10-05', codigo: 'LE2-ERM2026-0087' },
-  { dni: '72145896', nombre: 'LUCÍA FERNANDA TORRES QUISPE', funcion: 'ASISTENTE ADMINISTRATIVO', inicio: '2026-09-15', fin: '2026-11-30', codigo: 'LE2-ERM2026-0212' },
+  // Pega aquí las líneas que genera la plantilla de Excel (columna G), una por persona.
 ];
 
 /* ---------- utilidades (no hace falta tocarlas) ---------- */
