@@ -42,7 +42,7 @@ export default function App() {
 
               <div className="mt-4 flex flex-wrap justify-center items-center gap-1.5 text-xs text-slate-400">
                 <span>Ejemplos:</span>
-                {Object.keys(REGISTROS).map(d => (
+                {REGISTROS.map(({ dni: d }) => (
                   <button key={d} type="button" onClick={() => { setDni(d); buscar(d); }} className="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-[#b01c22] ring-1 ring-slate-200 font-mono">{d}</button>
                 ))}
               </div>
