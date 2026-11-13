@@ -15,30 +15,16 @@ export const CONFIG = {
 
 /* ============================================================
    PERSONAL — solo lo que cambia de una persona a otra.
-   La clave es el DNI. Las fechas van como "AAAA-MM-DD".
+   Cada persona lleva su `dni` (8 dígitos): es lo que se usa en el buscador.
+   UNA LÍNEA POR PERSONA (así se puede generar desde Excel con la plantilla). Fechas: "AAAA-MM-DD".
    • periodo  → se arma solo con inicio y fin.
    • fecha    → "Lima, <mes en que termina el contrato> <año>", se arma sola con `fin`.
    ============================================================ */
-export const REGISTROS = {
-  "45821367": {
-    nombre: "YOHANA ALCIRA CHUQUIHUACCHA QUIÑONES",
-    funcion: "FISCALIZADOR DE LOCAL DE VOTACIÓN",
-    inicio: "2026-10-01", fin: "2026-10-05",
-    codigo: "LE2-ERM2026-0143",
-  },
-  "70506809": {
-    nombre: "CLAUDIO ALEXANDREE BEJAR LENZ",
-    funcion: "FISCALIZADOR DE LOCAL DE VOTACIÓN",
-    inicio: "2026-10-01", fin: "2026-10-05",
-    codigo: "LE2-ERM2026-0087",
-  },
-  "72145896": {
-    nombre: "LUCÍA FERNANDA TORRES QUISPE",
-    funcion: "ASISTENTE ADMINISTRATIVO",
-    inicio: "2026-09-15", fin: "2026-11-30",
-    codigo: "LE2-ERM2026-0212",
-  },
-};
+export const REGISTROS = [
+  { dni: '45821367', nombre: 'YOHANA ALCIRA CHUQUIHUACCHA QUIÑONES', funcion: 'FISCALIZADOR DE LOCAL DE VOTACIÓN', inicio: '2026-10-01', fin: '2026-10-05', codigo: 'LE2-ERM2026-0143' },
+  { dni: '70506809', nombre: 'CLAUDIO ALEXANDREE BEJAR LENZ', funcion: 'FISCALIZADOR DE LOCAL DE VOTACIÓN', inicio: '2026-10-01', fin: '2026-10-05', codigo: 'LE2-ERM2026-0087' },
+  { dni: '72145896', nombre: 'LUCÍA FERNANDA TORRES QUISPE', funcion: 'ASISTENTE ADMINISTRATIVO', inicio: '2026-09-15', fin: '2026-11-30', codigo: 'LE2-ERM2026-0212' },
+];
 
 /* ---------- utilidades (no hace falta tocarlas) ---------- */
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
@@ -55,7 +41,7 @@ function armarPeriodo(inicio, fin) {
 
 /* Devuelve el registro completo (datos comunes + personales + periodo y fecha calculados), o null si no existe. */
 export function obtenerRegistro(dni) {
-  const r = REGISTROS[dni];
+  const r = REGISTROS.find(x => x.dni === String(dni).trim());
   if (!r) return null;
   const f = partes(r.fin);
   return {
@@ -65,3 +51,7 @@ export function obtenerRegistro(dni) {
     fecha: r.fecha ?? `${CONFIG.ciudad}, ${mayus(MESES[f.m - 1])} ${f.a}`,
   };
 }
+
+/* Aviso en consola si se repite algún DNI (solo ayuda al cargar datos). */
+const repetidos = REGISTROS.map(r => r.dni).filter((d, i, a) => a.indexOf(d) !== i);
+if (repetidos.length) console.warn("DNI repetidos en registros.js:", repetidos);
