@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Brujula from './components/Brujula';
 import Certificado from './components/Certificado';
-import { REGISTROS } from './data/registros';
+import { REGISTROS, obtenerRegistro } from './data/registros';
 import { initAudio, setMuted } from './lib/audio';
 
 const logo = `${import.meta.env.BASE_URL}img/logo-color.png`;
@@ -12,7 +12,7 @@ export default function App() {
   const buscar = (valor = dni) => {
     const d = valor.trim();
     if (!/^\d{8}$/.test(d)) return setError('El DNI debe tener exactamente 8 dígitos.');
-    const registro = REGISTROS[d];
+    const registro = obtenerRegistro(d);
     if (!registro) return setError('No se encontró una constancia asociada a ese DNI.');
     setError(''); initAudio(); setSel({ dni: d, registro });
   };
