@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Brujula from './components/Brujula';
 import Certificado from './components/Certificado';
-import { REGISTROS, obtenerRegistro } from './data/registros';
+import { obtenerRegistro } from './data/registros';
 import { initAudio, setMuted } from './lib/audio';
 
 const logo = `${import.meta.env.BASE_URL}img/logo-color.png`;
@@ -39,13 +39,6 @@ export default function App() {
                 {error && <p className="text-sm text-[#b01c22] font-medium mt-3">{error}</p>}
                 <button className="mt-5 bg-[#b01c22] hover:bg-[#8f151a] text-white font-bold rounded-xl px-8 py-3.5 shadow-lg shadow-red-900/25 transition font-sans">Visualizar Certificado</button>
               </form>
-
-              <div className="mt-4 flex flex-wrap justify-center items-center gap-1.5 text-xs text-slate-400">
-                <span>Ejemplos:</span>
-                {REGISTROS.map(({ dni: d }) => (
-                  <button key={d} type="button" onClick={() => { setDni(d); buscar(d); }} className="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-[#b01c22] ring-1 ring-slate-200 font-mono">{d}</button>
-                ))}
-              </div>
               <hr className="my-6 border-slate-200" />
               <p className="text-sm italic text-slate-500 leading-relaxed">"Gracias por asumir el reto como fiscalizadores de local de votación de estas Elecciones Regionales y Municipales 2026"</p>
             </div>
