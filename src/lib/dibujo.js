@@ -41,6 +41,10 @@ export function dibujarBase(imgs, r) {
   g.textAlign = "right"; g.font = `700 ${1.5 * U}px ${F.sans}`; g.fillStyle = "#222"; g.fillText(r.fecha, W - 5.6 * U, 60.2 * U);
   w = 6.4 * U * imgs.color.width / imgs.color.height; g.globalCompositeOperation = "multiply"; g.drawImage(imgs.color, 27.5 * U, 57.6 * U, w, 6.4 * U); g.globalCompositeOperation = "source-over";
   g.fillStyle = "#2b2b30"; g.fillRect(35.5 * U, 58.7 * U, 34 * U, .14 * U);
+  if (imgs.firma) {                              // firma (viene de Firestore) apoyada sobre la línea
+    const fw = 13 * U, fh = fw * imgs.firma.height / imgs.firma.width;
+    g.globalCompositeOperation = "multiply"; g.drawImage(imgs.firma, 52.5 * U - fw / 2, 58.7 * U - fh * .88, fw, fh); g.globalCompositeOperation = "source-over";
+  }
   g.textAlign = "center"; g.fillStyle = "#222"; g.font = `700 ${1.2 * U}px ${F.sans}`; g.fillText(r.firmante.toUpperCase(), 52.5 * U, 60.1 * U);
   g.font = `600 ${1.2 * U}px ${F.sans}`; g.fillText(r.cargoFirmante, 52.5 * U, 61.6 * U); g.font = `400 ${1.2 * U}px ${F.sans}`; g.fillText(r.sede, 52.5 * U, 63.1 * U);
   g.fillStyle = "#fff"; g.font = `400 ${1 * U}px ${F.sans}`; sp(g, .12 * U); g.fillText(`CONSTANCIA N.° ${r.codigo}`, 50 * U, H - 1.6 * U); sp(g, 0);
