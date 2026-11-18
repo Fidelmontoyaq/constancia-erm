@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Cada constancia es un documento cuyo ID es el DNI.
+    // Se puede LEER un documento si se conoce el DNI, pero NO listar la colección completa.
+    match /constancias/{dni} {
+      allow get: if dni.matches('^[0-9]{8}$');
+      allow list, write: if false;
+    }
+
+    // Imagen de la firma (solo lectura desde la página; se escribe con el script de administración).
+    match /config/firma {
+      allow get: if true;
+      allow list, write: if false;
+    }
+
+    // Todo lo demás, bloqueado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
