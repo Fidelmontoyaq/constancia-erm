@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { W, H } from '../lib/dibujo';
 import { cargarRecursos } from '../lib/recursos';
+import { cargarFirma } from '../lib/consulta';
 import { crearMotor } from '../lib/motor';
 import { initAudio } from '../lib/audio';
 
@@ -11,9 +12,9 @@ export default function Certificado({ dni, registro, onVolver }) {
   useEffect(() => {
     let vivo = true;
     initAudio();
-    cargarRecursos().then(imgs => {
+    Promise.all([cargarRecursos(), cargarFirma()]).then(([imgs, firma]) => {
       if (!vivo) return;
-      motor.current = crearMotor(lienzo.current, imgs);
+      motor.current = crearMotor(lienzo.current, { ...imgs, firma });
       motor.current.cargar(registro);
       motor.current.reproducir();
     });
