@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import Brujula from './components/Brujula';
 import Certificado from './components/Certificado';
-import { obtenerRegistro } from './data/registros';
+import { buscarConstancia } from './lib/consulta';
 import { initAudio, setMuted } from './lib/audio';
 
 const logo = `${import.meta.env.BASE_URL}img/logo-color.png`;
 
 export default function App() {
-  const [dni, setDni] = useState(''), [error, setError] = useState(''), [sel, setSel] = useState(null), [mudo, setMudo] = useState(false);
+  const [dni, setDni] = useState(''), [error, setError] = useState(''), [sel, setSel] = useState(null), [mudo, setMudo] = useState(false), [cargando, setCargando] = useState(false);
 
-  const buscar = (valor = dni) => {
+  const buscar = async (valor = dni) => {
     const d = valor.trim();
+    if (cargando) return;
     if (!/^\d{8}$/.test(d)) return setError('El DNI debe tener exactamente 8 dígitos.');
-    const registro = obtenerRegistro(d);
-    if (!registro) return setError('No se encontró una constancia asociada a ese DNI.');
-    setError(''); initAudio(); setSel({ dni: d, registro });
+    setCargando(true); setError('');
+    try {
+      const registro = await buscarConstancia(d);
+      if (!registro) return setError('No se encontró una constancia asociada a ese DNI.');
+      initAudio(); setSel({ dni: d, registro });
+    } catch (e) {
+      setError('No se pudo consultar en este momento. Revisa tu conexión e inténtalo de nuevo.');
+    } finally { setCargando(false); }
   };
   const alternarSonido = () => { setMuted(!mudo); setMudo(!mudo); };
 
@@ -37,7 +43,7 @@ export default function App() {
                 <input value={dni} onChange={e => setDni(e.target.value.replace(/\D/g, ''))} inputMode="numeric" maxLength={8} placeholder="Ingresa DNI" aria-label="DNI"
                   className="w-full border border-slate-300 rounded-xl px-4 py-4 text-lg text-center text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#b01c22]/50" />
                 {error && <p className="text-sm text-[#b01c22] font-medium mt-3">{error}</p>}
-                <button className="mt-5 bg-[#b01c22] hover:bg-[#8f151a] text-white font-bold rounded-xl px-8 py-3.5 shadow-lg shadow-red-900/25 transition font-sans">Visualizar Certificado</button>
+                <button disabled={cargando} className="mt-5 bg-[#b01c22] hover:bg-[#8f151a] disabled:opacity-60 text-white font-bold rounded-xl px-8 py-3.5 shadow-lg shadow-red-900/25 transition font-sans">{cargando ? 'Buscando…' : 'Visualizar Certificado'}</button>
               </form>
               <hr className="my-6 border-slate-200" />
               <p className="text-sm italic text-slate-500 leading-relaxed">"Gracias por asumir el reto como fiscalizadores de local de votación de estas Elecciones Regionales y Municipales 2026"</p>
